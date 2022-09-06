@@ -1,33 +1,38 @@
 import 'dart:io';
 
 import 'package:companyattendence/loginscreen/signupscreen.dart';
+import 'package:companyattendence/util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Firebase/firebasehelper.dart';
+import '../Firebase/firebasehelper.dart';
+import '../Firebase/firebasehelper.dart';
 import '../homescreen.dart';
 import '../resuabletextfield.dart';
+import '../roundedbutton.dart';
 
 class LoginPage extends StatefulWidget {
-  // static String? SelectDesig;
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
+  bool Loading = false;
   String? Designation;
   String? Password;
   String firstvalue = "Please Select Designation";
   final TextEditingController Email = TextEditingController();
   final TextEditingController password = TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-
       body: Container(
         margin: EdgeInsets.only(top: 60),
         height: MediaQuery.of(context).size.height,
@@ -40,8 +45,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-
-
                 Column(
                   children: <Widget>[
                     Text(
@@ -62,55 +65,54 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   child: Column(
                     children: <Widget>[
-                      ///  Email Text Filed
-                      ///
-                      textfield(label: " Email", controller: Email,obscureText: false,),
-                      textfield(label: " Password", controller: password,obscureText: true,),
+
+                      textfield(
+                        label: " Email",
+                        controller: Email,
+                        obscureText: false,
+                      ),
+                      textfield(
+                        label: " Password",
+                        controller: password,
+                        obscureText: true,
+                      ),
 
 
-                      ///    password textfield
-                      ///
                       SizedBox(
                         height: 20,
                       ),
-
                     ],
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   child: Container(
-                    padding: EdgeInsets.only(top: 3, left: 3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-
-
-
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      onPressed: () {
-
-                        firebaseHelper().Login(Email.text,password.text);
-
-                        //Get.to(homepage());
-                      },
-                      color: Color(0xff0095FF),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
+                      padding: EdgeInsets.only(top: 3, left: 3),
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
+                      child: RoundButton(
+                        onTap: () {
+                          setState(() {
+                            Loading = true;
+                          });
+                          _auth
+                              .signInWithEmailAndPassword(
+                                  email: Email.text, password: password.text)
+                              .then((value) {
+                            setState(() {
+                              Loading = false;
+                            });
+                          }).onError((error, stackTrace) {
+                            Utils().toastMessage(error.toString());
+                            setState(() {
+                              Loading = false;
+                            });
+                          });
+                        },
+                        title: 'Login',
+                        loading: Loading,
+                      )),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -136,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
   Widget imageProfile() {
     return Center(
       child: Stack(children: <Widget>[
@@ -144,8 +147,6 @@ class _LoginPageState extends State<LoginPage> {
           backgroundImage: profilepic == null
               ? AssetImage("assets/profile.jpeg")
               : FileImage(File(profilepic!)) as ImageProvider,
-
-
         ),
         Positioned(
           bottom: 20.0,

@@ -8,29 +8,25 @@ import 'package:get/get.dart';
 
 import '../homescreen.dart';
 
-bool Loading = false;
-
 class firebaseHelper {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
- 
-
   Future Login(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {});
       return Get.to(homepage());
     } catch (e) {
       return (Get.snackbar('Error', 'Please Enter Correct Email or Password ',
-              colorText: Colors.black,
-              snackPosition: SnackPosition.BOTTOM,
-              icon: Icon(
-                Icons.error,
-                color: Colors.white,
-              ),
-              backgroundColor: Colors.green)
-          //'Error=  $e.toString()'
-          );
+          colorText: Colors.black,
+          snackPosition: SnackPosition.BOTTOM,
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          backgroundColor: Colors.green));
     }
   }
 
