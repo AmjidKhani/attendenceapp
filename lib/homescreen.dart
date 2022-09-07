@@ -1,3 +1,4 @@
+import 'package:companyattendence/showallemployee.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,7 +46,7 @@ class _homepageState extends State<homepage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.to(addingnewemployee());
+                        Get.to(showallemployee());
                       },
                       child: Card(
                         child: Column(

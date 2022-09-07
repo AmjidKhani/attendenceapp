@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:companyattendence/loginscreen/signupscreen.dart';
-import 'package:companyattendence/util.dart';
+import 'package:companyattendence/resuable/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,8 +11,8 @@ import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
 import '../homescreen.dart';
-import '../resuabletextfield.dart';
-import '../roundedbutton.dart';
+import '../resuable/resuabletextfield.dart';
+import '../resuable/roundedbutton.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -102,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                               .then((value) {
                             setState(() {
                               Loading = false;
+                              Get.to(homepage());
                             });
                           }).onError((error, stackTrace) {
                             Utils().toastMessage(error.toString());

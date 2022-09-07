@@ -11,7 +11,7 @@ import 'dart:developer';
 import 'package:image_picker/image_picker.dart';
 
 import '../Firebase/firebasehelper.dart';
-import '../resuabletextfield.dart';
+import '../resuable/resuabletextfield.dart';
 
 class SignupPage extends StatefulWidget {
   @override
