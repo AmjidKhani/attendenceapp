@@ -23,8 +23,6 @@ class Loginemployee extends StatefulWidget {
 }
 
 class _LoginemployeeState extends State<Loginemployee> {
-
-
   bool Loading = false;
   String? Designation;
   String? Password;
@@ -32,150 +30,157 @@ class _LoginemployeeState extends State<Loginemployee> {
   final TextEditingController idcontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
-late SharedPreferences sharedPreferences;
+  late SharedPreferences sharedPreferences;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Container(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: Container(
         margin: EdgeInsets.only(top: 60),
-    height: MediaQuery.of(context).size.height,
-    width: double.infinity,
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-    imageProfile(),
-    Expanded(
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-    Column(
-    children: <Widget>[
-    Text(
-    "Welcome To  EMployee Login ",
-    style:
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    SizedBox(
-    height: 20,
-    ),
-    Text(
-    "Login to your account",
-    style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-    )
-    ],
-    ),
-    Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40),
-    child: Column(
-    children: <Widget>[
-    textfield(
-    label: " Email",
-    controller: idcontroller,
-    obscureText: false,
-    ),
-    textfield(
-    label: " Password",
-    controller: passwordcontroller,
-    obscureText: true,
-    ),
-    SizedBox(
-    height: 20,
-    ),
-    ],
-    ),
-    ),
-    Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40),
-    child: Container(
-    padding: EdgeInsets.only(top: 3, left: 3),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(50),
-    ),
-    child: RoundButton(
-    onTap: () async {
+        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            imageProfile(),
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Welcome To  EMployee Login ",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Login to your account",
+                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Column(
+                    children: <Widget>[
+                      textfield(
+                        label: " Email",
+                        controller: idcontroller,
+                        obscureText: false,
+                      ),
+                      textfield(
+                        label: " Password",
+                        controller: passwordcontroller,
+                        obscureText: true,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    child: Container(
+                        padding: EdgeInsets.only(top: 3, left: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: RoundButton(
+                          onTap: () async {
+                            FocusScope.of(context).unfocus();
+                            String id = idcontroller.text.trim();
+                            String password = passwordcontroller.text.trim();
 
-    FocusScope.of(context).unfocus();
-    String id = idcontroller.text.trim();
-    String password = passwordcontroller.text.trim();
+                            if (id.isEmpty) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Employee id is still empty!"),
+                              ));
+                            } else if (password.isEmpty) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Password is still empty!"),
+                              ));
+                            } else {
+                              QuerySnapshot snap = await FirebaseFirestore
+                                  .instance
+                                  .collection("Employee")
+                                  .where('id', isEqualTo: id)
+                                  .get();
 
-    if(id.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    content: Text("Employee id is still empty!"),
-    ));
-    } else if(password.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    content: Text("Password is still empty!"),
-    ));
-    } else {
-    QuerySnapshot snap = await FirebaseFirestore.instance
-        .collection("Employee").where('id', isEqualTo: id).get();
+                              // print(snap.docs[0]['id']);
+                              try {
+                                if (password == snap.docs[0]['password']) {
+                                  sharedPreferences =
+                                      await SharedPreferences.getInstance();
 
-       // print(snap.docs[0]['id']);
-    try {
-      if(password == snap.docs[0]['password']) {
-       sharedPreferences = await SharedPreferences.getInstance();
+                                  sharedPreferences
+                                      .setString('employeeId', id)
+                                      .then((_) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TodayScreen()));
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("Password is not correct!"),
+                                  ));
+                                }
+                              } catch (e) {
+                                String error = " ";
 
-     sharedPreferences.setString('employeeId', id).then((_) {
-       Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => TodayScreen())
-          );
-       }
-        );
-      }
-      else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Password is not correct!"),
-        ));
-      }
-    }catch(e) {
-      String error = " ";
+                                if (e.toString() ==
+                                    "RangeError (index): Invalid value: Valid value range is empty: 0") {
+                                  setState(() {
+                                    error = "Employee id does not exist!";
+                                  });
+                                } else {
+                                  setState(() {
+                                    error = "Error occurred!";
+                                  });
+                                }
 
-      if(e.toString() == "RangeError (index): Invalid value: Valid value range is empty: 0") {
-        setState(() {
-          error = "Employee id does not exist!";
-        });
-      } else {
-        setState(() {
-          error = "Error occurred!";
-        });
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(error),
-      ));
-    }
-
-    }
-
-
-    }, title: 'Submit',)
-    )
-    ),
-    Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-    Text("Don't have an Company?"),
-    GestureDetector(
-    onTap: () {
-    Get.to(SignupPage());
-    },
-    child: Text(
-    " Sign up",
-    style: TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 18,
-    ),
-    )),
-    ],
-    ),
-    ],
-    ))
-    ],
-    ),
-    )
-    ,
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(error),
+                                ));
+                              }
+                            }
+                          },
+                          title: 'Submit',
+                        ))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Don't have an Company?"),
+                    GestureDetector(
+                        onTap: () {
+                          Get.to(SignupPage());
+                        },
+                        child: Text(
+                          " Sign up",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        )),
+                  ],
+                ),
+              ],
+            ))
+          ],
+        ),
+      ),
     );
   }
 
