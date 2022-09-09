@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import 'addemployee.dart';
+import '../addemployee.dart';
 
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);

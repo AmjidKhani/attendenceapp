@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyattendence/todaysattendence.dart';
-import 'package:companyattendence/todaysattendence.dart';
-import 'package:companyattendence/todaysattendence.dart';
+
 
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -135,13 +133,13 @@ class _TodayScreenState extends State<TodayScreen> {
                           Text(
                             "Check In",
                             style: TextStyle(
-                              //   fontFamily: "NexaRegular",
+
                               fontSize: screenWidth / 20,
                               color: Colors.black54,
                             ),
                           ),
                           Text(
-                            //    DateTime.now().day.toString(),
+
                             checkIn,
                             style: TextStyle(
                               //  fontFamily: "NexaBold",

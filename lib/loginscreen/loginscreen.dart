@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/loginscreen/signupscreen.dart';
 import 'package:companyattendence/resuable/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
-import '../homescreen.dart';
+import '../homepagescreen/homescreen.dart';
 import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
 
@@ -92,17 +94,23 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: RoundButton(
-                        onTap: () {
+                        onTap: () async{
+                          String mail = Email.text.trim();
+                          String pass = password.text.trim();
                           setState(() {
                             Loading = true;
                           });
-                          _auth
+                             _auth
                               .signInWithEmailAndPassword(
-                                  email: Email.text, password: password.text)
-                              .then((value) {
+                                  email: mail, password: pass)
+                              .then((value) async{
+
+
+                            SharedPreferences prefss=await SharedPreferences.getInstance();
+                            prefss.setString('email', mail);
                             setState(() {
                               Loading = false;
-                              Get.to(homepage());
+                               Get.to(homepage());
                             });
                           }).onError((error, stackTrace) {
                             Utils().toastMessage(error.toString());
@@ -139,6 +147,23 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+SignInUser(){
+
+  final userlogin=     _auth
+      .signInWithEmailAndPassword(
+      email: Email.text, password: password.text)
+      .then((value) {
+    setState(() {
+      Loading = false;
+      // Get.to(homepage());
+    });
+  }).onError((error, stackTrace) {
+    Utils().toastMessage(error.toString());
+    setState(() {
+      Loading = false;
+    });
+  });
+}
 
   Widget imageProfile() {
     return Center(

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../homescreen.dart';
+import '../homepagescreen/homescreen.dart';
 
 class firebaseHelper {
   static final FirebaseAuth _auth = FirebaseAuth.instance;

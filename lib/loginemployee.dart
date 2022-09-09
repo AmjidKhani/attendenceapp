@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
-import '../homescreen.dart';
+import 'homepagescreen/homescreen.dart';
 import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
 
@@ -52,7 +52,7 @@ class _LoginemployeeState extends State<Loginemployee> {
                 Column(
                   children: <Widget>[
                     Text(
-                      "Welcome To  EMployee Login ",
+                      "Welcome To Login ",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
@@ -70,7 +70,7 @@ class _LoginemployeeState extends State<Loginemployee> {
                   child: Column(
                     children: <Widget>[
                       textfield(
-                        label: " Email",
+                        label: " ID",
                         controller: idcontroller,
                         obscureText: false,
                       ),
@@ -115,11 +115,10 @@ class _LoginemployeeState extends State<Loginemployee> {
                                   .where('id', isEqualTo: id)
                                   .get();
 
-                              // print(snap.docs[0]['id']);
+
                               try {
                                 if (password == snap.docs[0]['password']) {
-                                  sharedPreferences =
-                                      await SharedPreferences.getInstance();
+                                  sharedPreferences = await SharedPreferences.getInstance();
 
                                   sharedPreferences
                                       .setString('employeeId', id)
@@ -159,23 +158,7 @@ class _LoginemployeeState extends State<Loginemployee> {
                           },
                           title: 'Submit',
                         ))),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Don't have an Company?"),
-                    GestureDetector(
-                        onTap: () {
-                          Get.to(SignupPage());
-                        },
-                        child: Text(
-                          " Sign up",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                        )),
-                  ],
-                ),
+
               ],
             ))
           ],

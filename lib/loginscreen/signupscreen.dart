@@ -13,7 +13,8 @@ import 'package:image_picker/image_picker.dart';
 import '../Firebase/firebasehelper.dart';
 import '../resuable/resuabletextfield.dart';
 
-class SignupPage extends StatefulWidget {
+class
+SignupPage extends StatefulWidget {
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
@@ -26,7 +27,8 @@ class _SignupPageState extends State<SignupPage> {
   final items = ['Educational', 'IT', 'Hospital', 'Product'];
   final _rolelist = ["Educational", "IT", "Hospital", "Product"];
   String? _RoleSelect = "Select Role";
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+   final FirebaseFirestore _db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     final TextEditingController companyname = TextEditingController();
@@ -177,6 +179,15 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+  Future<String> signup(String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return "Sign_Up In";
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Widget imageProfile() {
