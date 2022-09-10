@@ -32,8 +32,9 @@ class _TodayScreenState extends State<TodayScreen> {
 
   @override
   void initState() {
-    super.initState();
     _getRecord();
+    super.initState();
+
   }
 
   void _getRecord() async {
