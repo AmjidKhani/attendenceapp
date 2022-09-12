@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/resuable/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'addemployee.dart';
@@ -27,7 +28,7 @@ class _showallemployeeState extends State<showallemployee> {
         ),
       ),
       body: Container(
-margin: EdgeInsets.only(top: 60),
+margin: EdgeInsets.only(top: 60.h),
         child:
         Column(
         children:[

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/loginscreen/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'dart:developer';
@@ -43,8 +44,8 @@ class _SignupPageState extends State<SignupPage> {
 
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 40),
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          margin: EdgeInsets.only(top: 40.h),
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Column(
@@ -59,7 +60,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   Text(
                     "Create a Comapany, It's free ",
-                    style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                    style: TextStyle(fontSize: 15.sp, color: Colors.grey[700]),
                   )
                 ],
               ),
@@ -87,7 +88,7 @@ class _SignupPageState extends State<SignupPage> {
                         border: UnderlineInputBorder()),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
                   textfield (label: "Company Name", controller: companyname,obscureText: false,),
                   textfield (label: "Email", controller: Emailcontroller,obscureText: false,),
@@ -103,13 +104,13 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
               Container(
-                padding: EdgeInsets.only(top: 3, left: 3),
+                padding: EdgeInsets.only(top: 3.h, left: 3.w),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(50.r),
                 ),
                 child: MaterialButton(
                   minWidth: double.infinity,
-                  height: 60,
+                  height: 60.h,
                   onPressed: () {
 
                     firebaseHelper(). signup(Emailcontroller.text ,PasswordController.text).then((value) async {
@@ -148,7 +149,7 @@ class _SignupPageState extends State<SignupPage> {
                     "Sign up",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       color: Colors.white,
                     ),
                   ),
@@ -169,7 +170,7 @@ class _SignupPageState extends State<SignupPage> {
                         " Login",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                          fontSize: 18.sp,
                         ),
                       )),
                 ],

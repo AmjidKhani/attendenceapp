@@ -6,6 +6,7 @@ import 'package:companyattendence/resuable/util.dart';
 import 'package:companyattendence/todaysattendence.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +39,7 @@ class _LoginemployeeState extends State<Loginemployee> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Container(
-        margin: EdgeInsets.only(top: 60),
+        margin: EdgeInsets.only(top: 60.h),
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         child: Column(
@@ -54,19 +55,19 @@ class _LoginemployeeState extends State<Loginemployee> {
                     Text(
                       "Welcome To Login ",
                       style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
                     Text(
                       "Login to your account",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                      style: TextStyle(fontSize: 15.sp, color: Colors.grey[700]),
                     )
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Column(
                     children: <Widget>[
                       textfield(
@@ -80,17 +81,17 @@ class _LoginemployeeState extends State<Loginemployee> {
                         obscureText: true,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 20.h,
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    padding: EdgeInsets.symmetric(horizontal: 40.w),
                     child: Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
+                        padding: EdgeInsets.only(top: 3.h, left: 3.w),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(50.r),
                         ),
                         child: RoundButton(
                           onTap: () async {
@@ -171,7 +172,7 @@ class _LoginemployeeState extends State<Loginemployee> {
     return Center(
       child: Stack(children: <Widget>[
         CircleAvatar(
-          radius: 80.0,
+          radius: 80.0.r,
           // backgroundImage: profilepic == null
           //   ? AssetImage("assets/profile.jpeg")
           // : FileImage(File(profilepic!)) as ImageProvider,

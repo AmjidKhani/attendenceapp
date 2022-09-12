@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'model/user.dart';
@@ -34,7 +34,6 @@ class _TodayScreenState extends State<TodayScreen> {
   void initState() {
     _getRecord();
     super.initState();
-
   }
 
   void _getRecord() async {
@@ -70,11 +69,11 @@ class _TodayScreenState extends State<TodayScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding:  EdgeInsets.all(20),
             child: Column(children: [
               Container(
                 alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(top: 32),
+                margin:  EdgeInsets.only(top: 32.h),
                 child: Text(
                   "Welcome,",
                   style: TextStyle(
@@ -99,7 +98,7 @@ class _TodayScreenState extends State<TodayScreen> {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(top: 32),
+                margin: EdgeInsets.only(top: 32.0.h),
                 child: Text(
                   "Today's Status",
                   style: TextStyle(
@@ -109,18 +108,18 @@ class _TodayScreenState extends State<TodayScreen> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 12, bottom: 32),
-                height: 150,
-                decoration: const BoxDecoration(
+                margin: EdgeInsets.only(top: 12.h, bottom: 32.w),
+                height: 150.h,
+                decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black26,
-                      blurRadius: 10,
+                      blurRadius: 10.r,
                       offset: Offset(2, 2),
                     ),
                   ],
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -134,13 +133,11 @@ class _TodayScreenState extends State<TodayScreen> {
                           Text(
                             "Check In",
                             style: TextStyle(
-
                               fontSize: screenWidth / 20,
                               color: Colors.black54,
                             ),
                           ),
                           Text(
-
                             checkIn,
                             style: TextStyle(
                               //  fontFamily: "NexaBold",
@@ -229,7 +226,6 @@ class _TodayScreenState extends State<TodayScreen> {
                           textStyle: TextStyle(
                             color: Colors.black54,
                             fontSize: screenWidth / 20,
-
                           ),
                           outerColor: Colors.white,
                           innerColor: primary,
@@ -296,7 +292,7 @@ class _TodayScreenState extends State<TodayScreen> {
                       }),
                     )
                   : Container(
-                      margin: EdgeInsets.only(top: 32),
+                      margin: EdgeInsets.only(top: 32.h),
                       child: Text(
                         "You Have Completed this Day",
                         style: TextStyle(

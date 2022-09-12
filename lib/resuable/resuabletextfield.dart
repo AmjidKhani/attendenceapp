@@ -1,7 +1,8 @@
-import 'dart:ffi';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class textfield extends StatelessWidget {
   String? label;
@@ -23,16 +24,16 @@ class textfield extends StatelessWidget {
               Text(
                 label.toString(),
                 style: TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+                    fontSize: 15.sp, fontWeight: FontWeight.w400, color: Colors.black87),
               ),
               SizedBox(
-                height: 5,
+                height: 5.h,
               ),
               TextField(
                 obscureText: obscureText??false,
                 controller: controller,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                  contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 10.w),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: (Colors.grey[400]!)),
                   ),
@@ -44,7 +45,7 @@ class textfield extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 10.h,
               ),
             ],
 

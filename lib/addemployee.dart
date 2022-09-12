@@ -7,6 +7,7 @@ import 'package:companyattendence/showallemployee.dart';
 import 'package:companyattendence/resuable/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -42,8 +43,8 @@ class _addingnewemployeeState extends State<addingnewemployee> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 40),
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          margin: EdgeInsets.only(top: 40.h),
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
           // height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Column(
@@ -51,14 +52,14 @@ class _addingnewemployeeState extends State<addingnewemployee> {
             children: <Widget>[
               //  imageProfile(),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
               Text(
                 "Add an Employee ",
-                style: TextStyle(fontSize: 30, color: Colors.grey[700]),
+                style: TextStyle(fontSize: 30.sp, color: Colors.grey[700]),
               ),
               SizedBox(
-                height: 20,
+                height: 20.sp,
               ),
               textfield(
                 label: "Name",
@@ -66,7 +67,7 @@ class _addingnewemployeeState extends State<addingnewemployee> {
                 obscureText: false,
               ),
               SizedBox(
-                height: 10,
+                height: 10.h,
               ),
               textfield(
                 label: "Id ",
@@ -79,21 +80,21 @@ class _addingnewemployeeState extends State<addingnewemployee> {
                 obscureText: true,
               ),
               SizedBox(
-                height: 10,
+                height: 10.h,
               ),
               textfield(
                   label: "Phone No",
                   obscureText: false,
                   controller: phonenoController),
               SizedBox(
-                height: 10,
+                height: 10.h,
               ),
               textfield(
                   label: "Cnic ",
                   obscureText: false,
                   controller: CnicController),
               SizedBox(
-                height: 10,
+                height: 10.h,
               ),
 
               textfield(
@@ -102,7 +103,7 @@ class _addingnewemployeeState extends State<addingnewemployee> {
                   controller: CityController),
 
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
 
               RoundButton(

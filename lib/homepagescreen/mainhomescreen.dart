@@ -2,6 +2,7 @@ import 'package:companyattendence/loginscreen/signupscreen.dart';
 import 'package:companyattendence/resuable/roundedbutton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,8 @@ class Mainhomescreen extends StatefulWidget {
 }
 
 class _MainhomescreenState extends State<Mainhomescreen> {
+  //double width = MediaQuery.of(context).size.width;
+  //double height = MediaQuery.of(context).size.height;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +39,14 @@ class _MainhomescreenState extends State<Mainhomescreen> {
               onTap: () {
                 Get.to(SignupPage());
               },),
-            SizedBox(height: 30,),
+            SizedBox(height: 30.h,),
             RoundButton(title: 'Login As an Admin',
               onTap: () {
                 Get.to(
                     LoginPage()
                 );
               },),
-            SizedBox(height: 30,),
+            SizedBox(height: 30.h,),
             RoundButton(title: 'Login As an Employee',
               onTap: () {
                 Get.to(
