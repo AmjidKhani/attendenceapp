@@ -4,8 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_to_act/slide_to_act.dart';
+import 'employeeattendencehistory.dart';
 import 'model/user.dart';
 import 'model/user.dart';
 
@@ -32,15 +35,26 @@ class _TodayScreenState extends State<TodayScreen> {
 
   @override
   void initState() {
+    getId();
     _getRecord();
     super.initState();
+  }
+  Future<void> getId() async {
+    QuerySnapshot snap = await FirebaseFirestore.instance
+        .collection("Employee")
+        .where('id', isEqualTo: User.employeeId)
+        .get();
+
+    setState(() {
+      User.id = snap.docs[0].id;
+    });
   }
 
   void _getRecord() async {
     try {
       QuerySnapshot snap = await FirebaseFirestore.instance
           .collection("Employee")
-          .where('id', isEqualTo: User.username)
+          .where('id', isEqualTo: User.employeeId)
           .get();
 
       DocumentSnapshot snap2 = await FirebaseFirestore.instance
@@ -86,7 +100,7 @@ class _TodayScreenState extends State<TodayScreen> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Employee " + User.username,
+                  "Employee " + User.employeeId,
                   //+ User.employeeId,
                   style: TextStyle(
                     color: Colors.red,
@@ -231,14 +245,13 @@ class _TodayScreenState extends State<TodayScreen> {
                           innerColor: primary,
                           key: key,
                           onSubmit: () async {
-                            Timer(Duration(seconds: 1), () {
-                              key.currentState!.reset();
-                            });
+
+
 
                             QuerySnapshot snap = await FirebaseFirestore
                                 .instance
                                 .collection("Employee")
-                                .where('id', isEqualTo: User.username)
+                                .where('id', isEqualTo: User.employeeId)
                                 .get();
 
                             DocumentSnapshot snap2 = await FirebaseFirestore
@@ -265,6 +278,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                   .doc(DateFormat('dd MMMM yyyy')
                                       .format(DateTime.now()))
                                   .update({
+                                'date':Timestamp.now(),
                                 'checkIn': checkIn,
                                 'checkOut':
                                     DateFormat('hh:mm').format(DateTime.now()),
@@ -281,12 +295,15 @@ class _TodayScreenState extends State<TodayScreen> {
                                   .doc(DateFormat('dd MMMM yyyy')
                                       .format(DateTime.now()))
                                   .set({
-                                'checkIn':
-                                    DateFormat('hh:mm').format(DateTime.now()),
-
+                                'date':Timestamp.now(),
+                                'checkIn': DateFormat('hh:mm').format(DateTime.now()),
+                                'checkOut':"--/--",
                                 //checkIn,
                               });
                             }
+
+                              key.currentState!.reset();
+
                           },
                         );
                       }),
@@ -301,6 +318,14 @@ class _TodayScreenState extends State<TodayScreen> {
                         ),
                       ),
                     ),
-            ])));
+              ElevatedButton(onPressed: (){
+                Get.to(CalendarScreen());
+    },
+    child: Text('History'),
+    ),
+
+            ],
+
+            )));
   }
 }

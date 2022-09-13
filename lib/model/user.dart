@@ -1,6 +1,6 @@
 class User {
-  static String username = " ";
-  //static String id = " ";
+  static String employeeId = " ";
+  static String id = " ";
   //static String employeeId = " ";
   //static String firstName = " ";
   //static String lastName = " ";

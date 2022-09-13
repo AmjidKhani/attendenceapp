@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,10 +6,13 @@ class textfield extends StatelessWidget {
   String? label;
  TextEditingController? controller;
  bool? obscureText;
+ var textInputType;
+
+
 
   textfield(
       {
-      this. label, this. obscureText=false ,  this .controller
+      this. label, this. obscureText=false ,  this .controller,required this.textInputType
       }
 
       );
@@ -32,6 +33,8 @@ class textfield extends StatelessWidget {
               TextField(
                 obscureText: obscureText??false,
                 controller: controller,
+               keyboardType:textInputType,
+
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 10.w),
                   enabledBorder: OutlineInputBorder(

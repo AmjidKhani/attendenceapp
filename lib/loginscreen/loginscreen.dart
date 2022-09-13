@@ -18,10 +18,10 @@ import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
 
 class LoginPage extends StatefulWidget {
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   bool Loading = false;
   String? Designation;
@@ -30,6 +30,19 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController Email = TextEditingController();
   final TextEditingController password = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void cleartextfield() {
+    Email.clear();
+    password.clear();
+  }
+
+  @override
+  void dispose() {
+    Email.dispose();
+    password.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +65,16 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     Text(
                       "Welcome To Login ",
-                      style:
-                          TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 30.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     Text(
                       "Login to your account",
-                      style: TextStyle(fontSize: 15.sp, color: Colors.grey[700]),
+                      style:
+                          TextStyle(fontSize: 15.sp, color: Colors.grey[700]),
                     )
                   ],
                 ),
@@ -68,19 +82,18 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Column(
                     children: <Widget>[
-
                       textfield(
                         label: " Email",
                         controller: Email,
                         obscureText: false,
+                        textInputType: TextInputType.emailAddress,
                       ),
                       textfield(
                         label: " Password",
                         controller: password,
                         obscureText: true,
+                        textInputType: TextInputType.visiblePassword,
                       ),
-
-
                       SizedBox(
                         height: 20.h,
                       ),
@@ -95,30 +108,38 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(50.r),
                       ),
                       child: RoundButton(
-                        onTap: () async{
+                        onTap: () async {
                           String mail = Email.text.trim();
                           String pass = password.text.trim();
-                          setState(() {
-                            Loading = true;
-                          });
-                             _auth
-                              .signInWithEmailAndPassword(
-                                  email: mail, password: pass)
-                              .then((value) async{
 
-
-                            SharedPreferences prefss=await SharedPreferences.getInstance();
-                            prefss.setString('email', mail);
+                          if (Email.text.isEmpty) {
+                            Utils().toastMessage("Email Must not be Empty");
+                          } else if (password.text.isEmpty) {
+                            Utils().toastMessage("Password Must not be Empty");
+                          } else {
                             setState(() {
-                              Loading = false;
-                               Get.to(homepage());
+                              Loading = true;
                             });
-                          }).onError((error, stackTrace) {
-                            Utils().toastMessage(error.toString());
-                            setState(() {
-                              Loading = false;
+                            _auth
+                                .signInWithEmailAndPassword(
+                                    email: mail, password: pass)
+                                .then((value) async {
+                              SharedPreferences prefss =
+                                  await SharedPreferences.getInstance();
+                              prefss.setString('email', mail);
+                              setState(() {
+                                Loading = false;
+                                Get.to(homepage());
+                                cleartextfield();
+                              });
+                            }).onError((error, stackTrace) {
+                              Utils().toastMessage(error.toString());
+                              setState(() {
+                                Loading = false;
+                                cleartextfield();
+                              });
                             });
-                          });
+                          }
                         },
                         title: 'Login',
                         loading: Loading,
@@ -148,23 +169,22 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-SignInUser(){
 
-  final userlogin=     _auth
-      .signInWithEmailAndPassword(
-      email: Email.text, password: password.text)
-      .then((value) {
-    setState(() {
-      Loading = false;
-      // Get.to(homepage());
+  SignInUser() {
+    final userlogin = _auth
+        .signInWithEmailAndPassword(email: Email.text, password: password.text)
+        .then((value) {
+      setState(() {
+        Loading = false;
+        // Get.to(homepage());
+      });
+    }).onError((error, stackTrace) {
+      Utils().toastMessage(error.toString());
+      setState(() {
+        Loading = false;
+      });
     });
-  }).onError((error, stackTrace) {
-    Utils().toastMessage(error.toString());
-    setState(() {
-      Loading = false;
-    });
-  });
-}
+  }
 
   Widget imageProfile() {
     return Center(

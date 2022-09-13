@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'addemployee.dart';
+import 'employeeattendencehistory.dart';
 import 'homepagescreen/homescreen.dart';
 import 'homepagescreen/mainhomescreen.dart';
 import 'model/user.dart';
@@ -25,7 +28,7 @@ void main() async {
   try {
     if (sharedPreferences.getString('employeeId') != null) {
 
-        User.username = sharedPreferences.getString('employeeId')!;
+        User.employeeId = sharedPreferences.getString('employeeId')!;
         userAvailable = true;
       }
     }
@@ -49,9 +52,16 @@ void main() async {
           builder: (context)=>
            ScreenUtilInit(
              builder:(_,child) => GetMaterialApp(
-    home: Mainhomescreen(),
-    //userAvailable ? TodayScreen():adminAvailable?homepage():
-    //Mainhomescreen(),
+    home:
+    //CalendarScreen(),
+    //addingnewemployee(),
+                // Mainhomescreen(),
+    userAvailable ? TodayScreen():adminAvailable?homepage():
+   Mainhomescreen(),
+
+               localizationsDelegates: [
+                MonthYearPickerLocalizations.delegate
+               ],
   ),
              designSize:const Size(393,826),
            ),

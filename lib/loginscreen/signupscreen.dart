@@ -7,41 +7,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer';
-
 import 'package:image_picker/image_picker.dart';
 
 import '../Firebase/firebasehelper.dart';
 import '../resuable/resuabletextfield.dart';
+import '../resuable/util.dart';
 
-class
-SignupPage extends StatefulWidget {
+class SignupPage extends StatefulWidget {
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
 
 String? profilepic;
-
+bool Loading=false;
 class _SignupPageState extends State<SignupPage> {
-  String _selectedRole = "Select Role";
+
   String? valueselected;
   final items = ['Educational', 'IT', 'Hospital', 'Product'];
   final _rolelist = ["Educational", "IT", "Hospital", "Product"];
   String? _RoleSelect = "Select Role";
   final FirebaseAuth _auth = FirebaseAuth.instance;
-   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final TextEditingController companyname = TextEditingController();
+  final TextEditingController Emailcontroller = TextEditingController();
+  final TextEditingController PasswordController = TextEditingController();
+  final TextEditingController ConformPasswordController =
+      TextEditingController();
+
+  void cleartextfield() {
+    companyname.clear();
+    Emailcontroller.clear();
+    PasswordController.clear();
+    PasswordController.clear();
+    ConformPasswordController.clear();
+
+  }
+
+  @override
+  void dispose() {
+    companyname.dispose();
+    Emailcontroller.dispose();
+    PasswordController.dispose();
+    ConformPasswordController.dispose();
+    _RoleSelect;
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController companyname = TextEditingController();
-    final TextEditingController Emailcontroller = TextEditingController();
-    final TextEditingController PasswordController = TextEditingController();
-    final TextEditingController ConformPasswordController =
-        TextEditingController();
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(top: 40.h),
@@ -54,7 +71,6 @@ class _SignupPageState extends State<SignupPage> {
               imageProfile(),
               Column(
                 children: <Widget>[
-
                   SizedBox(
                     height: 20,
                   ),
@@ -90,16 +106,30 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  textfield (label: "Company Name", controller: companyname,obscureText: false,),
-                  textfield (label: "Email", controller: Emailcontroller,obscureText: false,),
-                  textfield (
-                      label: "Password",
-                      obscureText: true,
-                      controller: PasswordController),
-                  textfield (
-                      label: "Confirm Password ",
-                      obscureText: true,
-                      controller: ConformPasswordController),
+                  textfield(
+                    label: "Company Name",
+                    controller: companyname,
+                    obscureText: false,
+                    textInputType: TextInputType.text,
+                  ),
+                  textfield(
+                    label: "Email",
+                    controller: Emailcontroller,
+                    obscureText: false,
+                    textInputType: TextInputType.text,
+                  ),
+                  textfield(
+                    label: "Password",
+                    obscureText: true,
+                    controller: PasswordController,
+                    textInputType: TextInputType.text,
+                  ),
+                  textfield(
+                    label: "Confirm Password ",
+                    obscureText: true,
+                    controller: ConformPasswordController,
+                    textInputType: TextInputType.text,
+                  ),
                   //inputFile(label: "Designation"),
                 ],
               ),
@@ -112,33 +142,57 @@ class _SignupPageState extends State<SignupPage> {
                   minWidth: double.infinity,
                   height: 60.h,
                   onPressed: () {
+                    if (Emailcontroller.text.isEmpty) {
+                      Utils().toastMessage("Email Must not be Empty");
 
-                    firebaseHelper(). signup(Emailcontroller.text ,PasswordController.text).then((value) async {
-                      User? user =FirebaseAuth.instance.currentUser;
-                      await FirebaseFirestore.instance.collection(
-                          'Users').doc(user?.uid).
-                      set({
-                        'uid':user?.uid,
-                        'company_name':companyname.text,
-                        'email':Emailcontroller.text,
-                        'password':PasswordController.text,
-                        'Conform Password':ConformPasswordController.text,
-                        'Role':_RoleSelect,
+                    }
+                    else if(PasswordController.text.isEmpty){
+                      Utils().toastMessage("Password Must not be Empty");
+                    }
+                    else if(companyname.text.isEmpty){
+                      Utils().toastMessage("CompanyName Must not be Empty");
+                    }
+                    else if(ConformPasswordController.text.isEmpty){
+                      Utils().toastMessage("Conform Password Must not be Empty");
+                    }
+                    else if(_RoleSelect=="Select Role"){
+                      Utils().toastMessage("Company type Must not be Empty");
+                    }
+                    else{
+
+                      firebaseHelper()
+                        .signup(Emailcontroller.text, PasswordController.text)
+                        .then((value) async {
+                        setState(() {
+                          Loading = true;
+                        });
+                      User? user = FirebaseAuth.instance.currentUser;
+                      await FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(user?.uid)
+                          .set({
+                        'uid': user?.uid,
+                        'company_name': companyname.text,
+                        'email': Emailcontroller.text,
+                        'password': PasswordController.text,
+                        'Conform Password': ConformPasswordController.text,
+                        'Role': _RoleSelect,
                       }).onError((error, stackTrace) {
                         print("Error$error");
                       });
                       //Get.to(LoginPage());
                     });
-                    if(User== null){
-
+                    if (User == null) {
                       Get.to(SignupPage());
                       print("Please Add the User ");
-
-                    }
-                    else {
+                    } else {
+                      setState(() {
+                        Loading = false;
+                      });
                       Get.to(LoginPage());
+                      cleartextfield();
                     }
-
+                  }
                   },
                   color: Color(0xff0095FF),
                   elevation: 0,
@@ -158,7 +212,7 @@ class _SignupPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Already have an Company pf8up ?"),
+                  Text("Already have an Company Loginup ?"),
                   GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -181,6 +235,7 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
+
   Future<String> signup(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -199,8 +254,6 @@ class _SignupPageState extends State<SignupPage> {
           backgroundImage: profilepic == null
               ? AssetImage("assets/profile.jpeg")
               : FileImage(File(profilepic!)) as ImageProvider,
-
-
         ),
         Positioned(
           bottom: 20.0,
@@ -226,6 +279,4 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 } //main close
-// we will be creating a widget for text field
-
 

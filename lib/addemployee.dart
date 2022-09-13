@@ -19,6 +19,7 @@ class addingnewemployee extends StatefulWidget {
 }
 
 String? profilepic;
+bool loading = false;
 final TextEditingController UserNameController = TextEditingController();
 final TextEditingController idcontroller = TextEditingController();
 final TextEditingController PasswordController = TextEditingController();
@@ -34,6 +35,19 @@ class _addingnewemployeeState extends State<addingnewemployee> {
     phonenoController.clear();
     CnicController.clear();
     CityController.clear();
+  }
+
+  @override
+  void dispose() {
+    UserNameController.dispose();
+    idcontroller.dispose();
+    PasswordController.dispose();
+    phonenoController.dispose();
+    CnicController.dispose();
+    CityController.dispose();
+
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -65,6 +79,7 @@ class _addingnewemployeeState extends State<addingnewemployee> {
                 label: "Name",
                 controller: UserNameController,
                 obscureText: false,
+                textInputType: TextInputType.name,
               ),
               SizedBox(
                 height: 10.h,
@@ -73,34 +88,43 @@ class _addingnewemployeeState extends State<addingnewemployee> {
                 label: "Id ",
                 controller: idcontroller,
                 obscureText: false,
+                textInputType: TextInputType.text,
               ),
               textfield(
                 label: "Password ",
                 controller: PasswordController,
                 obscureText: true,
+                textInputType: TextInputType.text,
               ),
               SizedBox(
                 height: 10.h,
               ),
               textfield(
-                  label: "Phone No",
-                  obscureText: false,
-                  controller: phonenoController),
+                label: "Phone No",
+                obscureText: false,
+                controller: phonenoController,
+                textInputType: TextInputType.phone,
+              ),
+
               SizedBox(
                 height: 10.h,
               ),
               textfield(
-                  label: "Cnic ",
-                  obscureText: false,
-                  controller: CnicController),
+                label: "Cnic ",
+                obscureText: false,
+                controller: CnicController,
+                textInputType: TextInputType.number,
+              ),
               SizedBox(
                 height: 10.h,
               ),
 
               textfield(
-                  label: "City ",
-                  obscureText: false,
-                  controller: CityController),
+                label: "City ",
+                obscureText: false,
+                controller: CityController,
+                textInputType: TextInputType.text,
+              ),
 
               SizedBox(
                 height: 20.h,
@@ -124,18 +148,42 @@ class _addingnewemployeeState extends State<addingnewemployee> {
       FirebaseFirestore.instance.collection("Employee");
 
   void addEmplyee() async {
-    await Employee.add({
-      'name': UserNameController.text,
-      'id': idcontroller.text,
-      'password': PasswordController.text,
-      'phoneno': phonenoController.text,
-      'cnic': CnicController.text,
-      'city': CityController.text
-    }).then((value) {
-      Get.to(showallemployee());
-      cleartextfield();
-    }).onError((error, stackTrace) {
-      Utils().toastMessage(error.toString());
-    });
+    if (UserNameController.text.isEmpty) {
+      Utils().toastMessage("Name Must not be Empty");
+    } else if (idcontroller.text.isEmpty) {
+      Utils().toastMessage("ID Must not be Empty");
+    } else if (PasswordController.text.isEmpty) {
+      Utils().toastMessage("Password Must not be Empty");
+    } else if (phonenoController.text.isEmpty) {
+      Utils().toastMessage("Phone_no Must not be Empty");
+    } else if (CnicController.text.isEmpty) {
+      Utils().toastMessage("Cnic Must not be Empty");
+    } else if (CityController.text.isEmpty) {
+      Utils().toastMessage("City Must not be Empty");
+    } else {
+      setState(() {
+        loading = true;
+      });
+      await Employee.add({
+        'name': UserNameController.text,
+        'id': idcontroller.text,
+        'password': PasswordController.text,
+        'phoneno': phonenoController.text,
+        'cnic': CnicController.text,
+        'city': CityController.text
+      }).then((value) {
+        setState(() {
+          loading = false;
+        });
+        Get.to(showallemployee());
+        cleartextfield();
+      }).onError((error, stackTrace) {
+        setState(() {
+          loading = false;
+        });
+
+        Utils().toastMessage(error.toString());
+      });
+    }
   }
 }

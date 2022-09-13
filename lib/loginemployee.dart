@@ -32,6 +32,18 @@ class _LoginemployeeState extends State<Loginemployee> {
   final TextEditingController passwordcontroller = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   late SharedPreferences sharedPreferences;
+  void cleartextfield() {
+    idcontroller.clear();
+    passwordcontroller.clear();
+
+  }
+  @override
+  void dispose() {
+    idcontroller.dispose();
+    passwordcontroller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +86,13 @@ class _LoginemployeeState extends State<Loginemployee> {
                         label: " ID",
                         controller: idcontroller,
                         obscureText: false,
+                        textInputType: TextInputType.emailAddress,
                       ),
                       textfield(
                         label: " Password",
                         controller: passwordcontroller,
                         obscureText: true,
+                        textInputType: TextInputType.visiblePassword,
                       ),
                       SizedBox(
                         height: 20.h,
@@ -100,16 +114,14 @@ class _LoginemployeeState extends State<Loginemployee> {
                             String password = passwordcontroller.text.trim();
 
                             if (id.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Employee id is still empty!"),
-                              ));
+                              Utils().toastMessage("ID Must not be Empty");
                             } else if (password.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Password is still empty!"),
-                              ));
+                              Utils().toastMessage("Password Must not be Empty");
                             } else {
+                              setState(() {
+                                 Loading = true;
+                              });
+
                               QuerySnapshot snap = await FirebaseFirestore
                                   .instance
                                   .collection("Employee")
@@ -124,19 +136,26 @@ class _LoginemployeeState extends State<Loginemployee> {
                                   sharedPreferences
                                       .setString('employeeId', id)
                                       .then((_) {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                TodayScreen()));
-                                  });
+                                        setState(() {
+                                         Loading = false;
+                                        });
+                                        Get.to(TodayScreen());
+                                        cleartextfield();
+                                      });
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text("Password is not correct!"),
                                   ));
+                                  setState(() {
+                                    Loading = false;
+                                  });
+                                  cleartextfield();
                                 }
                               } catch (e) {
+                                setState(() {
+                                  Loading = false;
+                                });
                                 String error = " ";
 
                                 if (e.toString() ==
