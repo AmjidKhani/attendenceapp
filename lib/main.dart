@@ -9,33 +9,26 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'addemployee.dart';
-import 'employeeattendencehistory.dart';
+import 'attendencehistory/employeeattendencehistory.dart';
 import 'homepagescreen/homescreen.dart';
 import 'homepagescreen/mainhomescreen.dart';
 import 'model/user.dart';
 import 'model/user.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
   bool userAvailable = false;
   bool adminAvailable = false;
-  bool Available = false;
-
   final sharedPreferences = await SharedPreferences.getInstance();
   final prefss = await SharedPreferences.getInstance();
   try {
     if (sharedPreferences.getString('employeeId') != null) {
-
-        User.employeeId = sharedPreferences.getString('employeeId')!;
+      User.employeeId = sharedPreferences.getString('employeeId')!;
         userAvailable = true;
       }
     }
    catch (e) {
-
     userAvailable = false;
-
   }
   try {
       if (prefss.getString('email') != null) {
@@ -52,12 +45,12 @@ void main() async {
           builder: (context)=>
            ScreenUtilInit(
              builder:(_,child) => GetMaterialApp(
-    home:
-    //CalendarScreen(),
-    //addingnewemployee(),
-                // Mainhomescreen(),
-    userAvailable ? TodayScreen():adminAvailable?homepage():
-   Mainhomescreen(),
+               debugShowCheckedModeBanner: false,
+    home:showallemployee(),
+
+
+  // userAvailable ? TodayScreen():adminAvailable?homepage():
+   //Mainhomescreen(),
 
                localizationsDelegates: [
                 MonthYearPickerLocalizations.delegate

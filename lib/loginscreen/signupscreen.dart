@@ -34,7 +34,7 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController ConformPasswordController =
       TextEditingController();
 
-  void cleartextfield() {
+  void cleartextfield() async{
     companyname.clear();
     Emailcontroller.clear();
     PasswordController.clear();
@@ -44,7 +44,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   @override
-  void dispose() {
+/*  void dispose() {
     companyname.dispose();
     Emailcontroller.dispose();
     PasswordController.dispose();
@@ -52,8 +52,8 @@ class _SignupPageState extends State<SignupPage> {
     _RoleSelect;
     // TODO: implement dispose
     super.dispose();
-  }
 
+  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,9 +163,7 @@ class _SignupPageState extends State<SignupPage> {
                       firebaseHelper()
                         .signup(Emailcontroller.text, PasswordController.text)
                         .then((value) async {
-                        setState(() {
-                          Loading = true;
-                        });
+
                       User? user = FirebaseAuth.instance.currentUser;
                       await FirebaseFirestore.instance
                           .collection('Users')
@@ -177,20 +175,22 @@ class _SignupPageState extends State<SignupPage> {
                         'password': PasswordController.text,
                         'Conform Password': ConformPasswordController.text,
                         'Role': _RoleSelect,
-                      }).onError((error, stackTrace) {
+                      }).whenComplete(() => cleartextfield())
+                          .onError((error, stackTrace) {
                         print("Error$error");
                       });
+
                       //Get.to(LoginPage());
                     });
                     if (User == null) {
                       Get.to(SignupPage());
                       print("Please Add the User ");
                     } else {
-                      setState(() {
-                        Loading = false;
-                      });
+                      // setState(() {
+                      //   Loading = false;
+                      // });
                       Get.to(LoginPage());
-                      cleartextfield();
+
                     }
                   }
                   },
@@ -236,15 +236,15 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Future<String> signup(String email, String password) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return "Sign_Up In";
-    } catch (e) {
-      return e.toString();
-    }
-  }
+  // Future<String> signup(String email, String password) async {
+  //   try {
+  //     await _auth.createUserWithEmailAndPassword(
+  //         email: email, password: password);
+  //     return "Sign_Up In";
+  //   } catch (e) {
+  //     return e.toString();
+  //   }
+  // }
 
   Widget imageProfile() {
     return Center(
