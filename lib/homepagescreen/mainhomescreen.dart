@@ -11,7 +11,7 @@ import '../loginemployee.dart';
 import '../loginscreen/loginscreen.dart';
 import '../loginscreen/signupscreen.dart';
 import '../model/user.dart';
-import '../todaysattendence.dart';
+import '../attendencescreen/todaysattendence.dart';
 
 class Mainhomescreen extends StatefulWidget {
   const Mainhomescreen({Key? key}) : super(key: key);
@@ -31,6 +31,7 @@ class _MainhomescreenState extends State<Mainhomescreen> {
         centerTitle: true,
       ),
       body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,7 +44,7 @@ class _MainhomescreenState extends State<Mainhomescreen> {
             RoundButton(title: 'Login As an Admin',
               onTap: () {
                 Get.to(
-                    LoginPage()
+                    LoginPage(),
                 );
               },),
             SizedBox(height: 30.h,),

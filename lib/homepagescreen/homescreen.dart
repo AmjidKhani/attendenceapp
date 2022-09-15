@@ -45,13 +45,17 @@ class _homepageState extends State<homepage> {
                   primary: false,
                   crossAxisCount: 2,
                   children: [
+
                     GestureDetector(
                       onTap: () {
                         Get.to(showallemployee());
                       },
                       child: Card(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
+
                             Image.asset(
                               'assets/division.png',
                               fit: BoxFit.fill,
@@ -69,29 +73,7 @@ class _homepageState extends State<homepage> {
                       ),
                     ),
                     //approval screen
-                    GestureDetector(
-                      onTap: () {
-                        //  Get.to(attendencepage());
-                      },
-                      child: Card(
-                        child: Column(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/approval.png',
-                              fit: BoxFit.fill,
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Attendence",
-                              style: TextStyle(
-                                  fontSize: 20.sp, fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ),

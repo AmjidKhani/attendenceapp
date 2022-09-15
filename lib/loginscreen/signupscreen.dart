@@ -1,24 +1,23 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/loginscreen/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:image_picker/image_picker.dart';
-
 import '../Firebase/firebasehelper.dart';
 import '../resuable/resuabletextfield.dart';
+import '../resuable/roundedbutton.dart';
 import '../resuable/util.dart';
-
 class SignupPage extends StatefulWidget {
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
 
-String? profilepic;
+File? profilepic;
+String? image;
 bool Loading=false;
 class _SignupPageState extends State<SignupPage> {
 
@@ -27,7 +26,7 @@ class _SignupPageState extends State<SignupPage> {
   final _rolelist = ["Educational", "IT", "Hospital", "Product"];
   String? _RoleSelect = "Select Role";
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+ // final FirebaseFirestore _db = FirebaseFirestore.instance;
   final TextEditingController companyname = TextEditingController();
   final TextEditingController Emailcontroller = TextEditingController();
   final TextEditingController PasswordController = TextEditingController();
@@ -42,18 +41,6 @@ class _SignupPageState extends State<SignupPage> {
     ConformPasswordController.clear();
 
   }
-
-  @override
-/*  void dispose() {
-    companyname.dispose();
-    Emailcontroller.dispose();
-    PasswordController.dispose();
-    ConformPasswordController.dispose();
-    _RoleSelect;
-    // TODO: implement dispose
-    super.dispose();
-
-  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +56,7 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               imageProfile(),
+              //uploadImages( profilepic),
               Column(
                 children: <Widget>[
                   SizedBox(
@@ -138,10 +126,9 @@ class _SignupPageState extends State<SignupPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50.r),
                 ),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 60.h,
-                  onPressed: () {
+                child: RoundButton(
+                  onTap: () {
+
                     if (Emailcontroller.text.isEmpty) {
                       Utils().toastMessage("Email Must not be Empty");
 
@@ -159,10 +146,15 @@ class _SignupPageState extends State<SignupPage> {
                       Utils().toastMessage("Company type Must not be Empty");
                     }
                     else{
-
+                      setState(() {
+                        Loading = true;
+                      });
                       firebaseHelper()
-                        .signup(Emailcontroller.text, PasswordController.text)
+                        .signup(Emailcontroller.text, PasswordController.text).whenComplete(() {
+                        uploadImages(profilepic!);
+                      })
                         .then((value) async {
+
 
                       User? user = FirebaseAuth.instance.currentUser;
                       await FirebaseFirestore.instance
@@ -186,27 +178,16 @@ class _SignupPageState extends State<SignupPage> {
                       Get.to(SignupPage());
                       print("Please Add the User ");
                     } else {
-                      // setState(() {
-                      //   Loading = false;
-                      // });
+                       setState(() {
+                         Loading = false;
+                       });
                       Get.to(LoginPage());
 
                     }
                   }
                   },
-                  color: Color(0xff0095FF),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Text(
-                    "Sign up",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.sp,
-                      color: Colors.white,
-                    ),
-                  ),
+                  title: 'Signup',
+
                 ),
               ),
               Row(
@@ -236,24 +217,21 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  // Future<String> signup(String email, String password) async {
-  //   try {
-  //     await _auth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return "Sign_Up In";
-  //   } catch (e) {
-  //     return e.toString();
-  //   }
-  // }
+Future uploadImages(File profilepic)async{
+ Reference reference=FirebaseStorage.instance.ref().child('/Images');
+ reference.putFile(profilepic);
+
+    return profilepic;
+}
 
   Widget imageProfile() {
     return Center(
       child: Stack(children: <Widget>[
         CircleAvatar(
           radius: 80.0,
-          backgroundImage: profilepic == null
-              ? AssetImage("assets/profile.jpeg")
-              : FileImage(File(profilepic!)) as ImageProvider,
+          backgroundImage: image != null
+              ? FileImage(File(image!))
+              : null
         ),
         Positioned(
           bottom: 20.0,
@@ -264,9 +242,16 @@ class _SignupPageState extends State<SignupPage> {
                   .pickImage(source: ImageSource.gallery, imageQuality: 50);
               if (pickImage != null) {
                 setState(() {
-                  profilepic = pickImage.path;
+                  profilepic = File(pickImage.path);
+                  image=   profilepic.toString();
+
+                      //pickImage.path;
                 });
               }
+              else
+                {
+                  print("hello");
+                }
             },
             child: Icon(
               Icons.camera_alt,

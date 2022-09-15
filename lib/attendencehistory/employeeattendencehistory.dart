@@ -113,6 +113,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
               ],
             ),
+
             SizedBox(
               height: screenHeight / 1.45,
               child: StreamBuilder<QuerySnapshot>(
@@ -122,7 +123,31 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     .collection("Record")
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if(snapshot.hasData) {
+    if (ConnectionState == ConnectionState.waiting) {
+    return Center(child: CircularProgressIndicator());
+    }
+    if (!snapshot.hasData) {
+    return Center(
+    child: Container(
+    child: Center(
+    child: Text(" ",
+    style: TextStyle(
+    fontSize: 20, fontWeight: FontWeight.bold)),
+    ),
+    ),
+    );
+    } else if (snapshot.data!.docs.isEmpty) {
+    return Center(
+    child: Container(
+    child: Center(
+    child: Text("Attendence Not Found",
+    style: TextStyle(
+    fontSize: 20, fontWeight: FontWeight.bold)),
+    ),
+    ),
+    );}
+
+    else {
                     final snap = snapshot.data!.docs;
                     return ListView.builder(
                       itemCount: snap.length,
@@ -153,8 +178,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius: BorderRadius.all(Radius.circular(20),
-
-
                                   )
 
                                 ),
@@ -213,15 +236,14 @@ snap[index]['date'].toDate(),),style: TextStyle(color: Colors.white),
                               ),
                             ],
                           ),
-                        ):
-                            SizedBox();
+                        ): SizedBox();
+
+                        //SizedBox();
 
 
 
                       },
                     );
-                  } else {
-                    return const Text("data not found",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold));
                   }
                 },
               ),

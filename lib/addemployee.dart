@@ -18,7 +18,7 @@ class addingnewemployee extends StatefulWidget {
   State<addingnewemployee> createState() => _addingnewemployeeState();
 }
 
-String? profilepic;
+
 bool loading = false;
 final TextEditingController UserNameController = TextEditingController();
 final TextEditingController idcontroller = TextEditingController();
@@ -38,17 +38,17 @@ class _addingnewemployeeState extends State<addingnewemployee> {
   }
 
   @override
-  void dispose() {
-    UserNameController.dispose();
-    idcontroller.dispose();
-    PasswordController.dispose();
-    phonenoController.dispose();
-    CnicController.dispose();
-    CityController.dispose();
-
-    // TODO: implement dispose
-    super.dispose();
-  }
+  // void dispose() {
+  //   UserNameController.dispose();
+  //   idcontroller.dispose();
+  //   PasswordController.dispose();
+  //   phonenoController.dispose();
+  //   CnicController.dispose();
+  //   CityController.dispose();
+  //
+  //   // TODO: implement dispose
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +133,9 @@ class _addingnewemployeeState extends State<addingnewemployee> {
               RoundButton(
                 title: 'Submit',
                 onTap: () {
+                  // setState(() {
+                  //   loading = true;
+                  // });
                   addEmplyee();
                 },
               ),

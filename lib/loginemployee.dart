@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/loginscreen/signupscreen.dart';
 import 'package:companyattendence/resuable/util.dart';
-import 'package:companyattendence/todaysattendence.dart';
+import 'package:companyattendence/attendencescreen/todaysattendence.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
 import '../Firebase/firebasehelper.dart';
+import 'addemployee.dart';
 import 'homepagescreen/homescreen.dart';
 import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
@@ -188,35 +189,16 @@ class _LoginemployeeState extends State<Loginemployee> {
   }
 
   Widget imageProfile() {
-    return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: 80.0.r,
-          // backgroundImage: profilepic == null
-          //   ? AssetImage("assets/profile.jpeg")
-          // : FileImage(File(profilepic!)) as ImageProvider,
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-          child: InkWell(
-            onTap: () async {
-              final XFile? pickImage = await ImagePicker()
-                  .pickImage(source: ImageSource.gallery, imageQuality: 50);
-              if (pickImage != null) {
-                setState(() {
-                  profilepic = pickImage.path;
-                });
-              }
-            },
-            child: Icon(
-              Icons.camera_alt,
-              color: Colors.teal,
-              size: 28.0,
-            ),
-          ),
-        ),
-      ]),
+    return Container(
+
+      child:  CircleAvatar(
+        radius: 80.0.r,
+         // backgroundImage: profilepic == null
+         //   ? null
+         // : FileImage(File(profilepic!!)) as ImageProvider,
+      ),
     );
+
+
   }
 }

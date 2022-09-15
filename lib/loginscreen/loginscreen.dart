@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/loginscreen/signupscreen.dart';
+import 'package:companyattendence/loginscreen/signupscreen.dart';
+import 'package:companyattendence/loginscreen/signupscreen.dart';
+import 'package:companyattendence/loginscreen/signupscreen.dart';
 import 'package:companyattendence/resuable/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +19,10 @@ import '../Firebase/firebasehelper.dart';
 import '../homepagescreen/homescreen.dart';
 import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
+import 'signupscreen.dart';
 
 class LoginPage extends StatefulWidget {
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -56,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            imageProfile(),
+         //   imageProfile(),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -82,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Column(
                     children: <Widget>[
+
                       textfield(
                         label: " Email",
                         controller: Email,
@@ -170,52 +176,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  SignInUser() {
-    final userlogin = _auth
-        .signInWithEmailAndPassword(email: Email.text, password: password.text)
-        .then((value) {
-      setState(() {
-        Loading = false;
-        // Get.to(homepage());
-      });
-    }).onError((error, stackTrace) {
-      Utils().toastMessage(error.toString());
-      setState(() {
-        Loading = false;
-      });
-    });
-  }
 
-  Widget imageProfile() {
-    return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: 80.0.r,
-          backgroundImage: profilepic == null
-              ? AssetImage("assets/profile.jpeg")
-              : FileImage(File(profilepic!)) as ImageProvider,
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-          child: InkWell(
-            onTap: () async {
-              final XFile? pickImage = await ImagePicker()
-                  .pickImage(source: ImageSource.gallery, imageQuality: 50);
-              if (pickImage != null) {
-                setState(() {
-                  profilepic = pickImage.path;
-                });
-              }
-            },
-            child: Icon(
-              Icons.camera_alt,
-              color: Colors.teal,
-              size: 28.0,
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
+  // Widget imageProfile() {
+  //   return Container(
+  //     child: CircleAvatar(
+  //       radius: 80.0.r,
+  //       backgroundImage: widget.image as ImageProvider
+  //     ),
+  //   );
+  //
+  //
+  // }
 }

@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_to_act/slide_to_act.dart';
-import 'attendencehistory/employeeattendencehistory.dart';
-import 'model/user.dart';
-import 'model/user.dart';
+import '../attendencehistory/employeeattendencehistory.dart';
+import '../model/user.dart';
+import '../model/user.dart';
 class TodayScreen extends StatefulWidget {
   const TodayScreen({Key? key}) : super(key: key);
 
@@ -317,7 +317,7 @@ class _TodayScreenState extends State<TodayScreen> {
                         ),
                       ),
                     ),
-              SizedBox(height: 240.h,),
+              SizedBox(height: 130.h,),
               RoundButton(title: 'Attendence History',
                 onTap: () {
                   Get.to(CalendarScreen());
