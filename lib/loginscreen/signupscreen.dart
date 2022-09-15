@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyattendence/addemployee.dart';
 import 'package:companyattendence/loginscreen/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,9 +19,12 @@ class SignupPage extends StatefulWidget {
 
 File? profilepic;
 String? image;
-bool Loading=false;
-class _SignupPageState extends State<SignupPage> {
 
+String? imgurl;
+Reference reference=FirebaseStorage.instance as Reference;
+class _SignupPageState extends State<SignupPage> {
+ // User? user = FirebaseAuth.instance.currentUser;
+  bool Loading=false;
   String? valueselected;
   final items = ['Educational', 'IT', 'Hospital', 'Product'];
   final _rolelist = ["Educational", "IT", "Hospital", "Product"];
@@ -56,7 +60,7 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               imageProfile(),
-              //uploadImages( profilepic),
+
               Column(
                 children: <Widget>[
                   SizedBox(
@@ -129,65 +133,11 @@ class _SignupPageState extends State<SignupPage> {
                 child: RoundButton(
                   onTap: () {
 
-                    if (Emailcontroller.text.isEmpty) {
-                      Utils().toastMessage("Email Must not be Empty");
-
-                    }
-                    else if(PasswordController.text.isEmpty){
-                      Utils().toastMessage("Password Must not be Empty");
-                    }
-                    else if(companyname.text.isEmpty){
-                      Utils().toastMessage("CompanyName Must not be Empty");
-                    }
-                    else if(ConformPasswordController.text.isEmpty){
-                      Utils().toastMessage("Conform Password Must not be Empty");
-                    }
-                    else if(_RoleSelect=="Select Role"){
-                      Utils().toastMessage("Company type Must not be Empty");
-                    }
-                    else{
-                      setState(() {
-                        Loading = true;
-                      });
-                      firebaseHelper()
-                        .signup(Emailcontroller.text, PasswordController.text).whenComplete(() {
-                        uploadImages(profilepic!);
-                      })
-                        .then((value) async {
-
-
-                      User? user = FirebaseAuth.instance.currentUser;
-                      await FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(user?.uid)
-                          .set({
-                        'uid': user?.uid,
-                        'company_name': companyname.text,
-                        'email': Emailcontroller.text,
-                        'password': PasswordController.text,
-                        'Conform Password': ConformPasswordController.text,
-                        'Role': _RoleSelect,
-                      }).whenComplete(() => cleartextfield())
-                          .onError((error, stackTrace) {
-                        print("Error$error");
-                      });
-
-                      //Get.to(LoginPage());
-                    });
-                    if (User == null) {
-                      Get.to(SignupPage());
-                      print("Please Add the User ");
-                    } else {
-                       setState(() {
-                         Loading = false;
-                       });
-                      Get.to(LoginPage());
-
-                    }
-                  }
+                    textfieldsecuritycheck();
                   },
-                  title: 'Signup',
 
+                  title: 'Signup',
+                   loading: Loading,
                 ),
               ),
               Row(
@@ -216,12 +166,75 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
+  textfieldsecuritycheck(){
+
+    if (Emailcontroller.text.isEmpty) {
+      Utils().toastMessage("Email Must not be Empty");
+    }
+    else if(PasswordController.text.isEmpty){
+      Utils().toastMessage("Password Must not be Empty");
+    }
+    else if(companyname.text.isEmpty){
+      Utils().toastMessage("CompanyName Must not be Empty");
+    }
+    else if(ConformPasswordController.text.isEmpty){
+      Utils().toastMessage("Conform Password Must not be Empty");
+    }
+    else if(_RoleSelect=="Select Role"){
+      Utils().toastMessage("Company type Must not be Empty");
+    }
+    else{
+      setState(() {
+        Loading = true;
+      });
+      firebaseHelper()
+          .signup(Emailcontroller.text, PasswordController.text).
+      then((value) async {
+        User? user = FirebaseAuth.instance.currentUser;
+          var imgurll=imgurl;
+         // imgurll= await uploadImages(profilepic!);
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user?.uid)
+            .set({
+          'uid': user?.uid,
+          'company_name': companyname.text,
+          'email': Emailcontroller.text,
+          'password': PasswordController.text,
+          'Conform Password': ConformPasswordController.text,
+          'Role': _RoleSelect,
+           'images':imgurll,
+        }).whenComplete(() {
+          setState(() {
+
+            Loading=false;
+          });
+          cleartextfield();
+          Get.to(LoginPage());
+        } )
+            .onError((error, stackTrace) {
+          Utils().toastMessage(error.toString());
+          setState(() {
+            Loading=false;
+          });
+        });
+
+
+      }
+      );
+
+
+    }
+  }
 
 Future uploadImages(File profilepic)async{
- Reference reference=FirebaseStorage.instance.ref().child('/Images');
+
+    String imag=DateTime.now().microsecondsSinceEpoch.toString();
+ Reference reference=FirebaseStorage.instance.ref().child('/Images').child('profileimage$imag');
  reference.putFile(profilepic);
 
-    return profilepic;
+imgurl=await reference.getDownloadURL();
+    return imgurl;
 }
 
   Widget imageProfile() {
@@ -230,7 +243,7 @@ Future uploadImages(File profilepic)async{
         CircleAvatar(
           radius: 80.0,
           backgroundImage: image != null
-              ? FileImage(File(image!))
+              ? FileImage(File(image!))as ImageProvider
               : null
         ),
         Positioned(
@@ -243,10 +256,10 @@ Future uploadImages(File profilepic)async{
               if (pickImage != null) {
                 setState(() {
                   profilepic = File(pickImage.path);
-                  image=   profilepic.toString();
+                  image=   pickImage.path;
 
-                      //pickImage.path;
                 });
+                uploadImages(profilepic!);
               }
               else
                 {

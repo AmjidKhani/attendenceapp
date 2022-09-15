@@ -55,6 +55,7 @@ class _showallemployeeState extends State<showallemployee> {
                   }
                   var doc = snapshot.data!.docs;
                   return ListView.builder(
+
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, index) {
                       return Container(
@@ -125,6 +126,8 @@ class _showallemployeeState extends State<showallemployee> {
                               SizedBox(
                                 height: 50.h,
                                 width: 190.w,
+
+
                                 child: RoundButton(
                                   title: 'Attendence History',
                                   onTap: () {

@@ -22,10 +22,14 @@ import '../resuable/roundedbutton.dart';
 import 'signupscreen.dart';
 
 class LoginPage extends StatefulWidget {
+  // String userid;
+  // LoginPage(this.userid);
+
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 
 class _LoginPageState extends State<LoginPage> {
   bool Loading = false;
@@ -61,6 +65,43 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+      //       Expanded(
+      //         child: FutureBuilder(
+      //   future: FirebaseFirestore.instance.collection("Users").doc(widget.userid).get(),
+      //     builder: (
+      //           BuildContext context,
+      //           AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot)
+      //     {
+      //         return Container();
+      //           //Image.network("${snapshot.data!['images']}");
+      //     //
+      //          // print("hello");
+      //          //       CircleAvatar(
+      //          //        radius: 80,
+      //          //        backgroundImage:Image.network("${snapshot.data!['images']}"),
+      //          //      );
+      //             },
+      //
+      //
+      //
+      //
+      // ),
+      //       ),
+            //.collection("Record")
+            //.snapshots(),
+      //   builder: (BuildContext context,
+      //       AsyncSnapshot<QuerySnapshot> snapshot){
+      //     return ListView.builder(
+      //     itemCount: snapshot.data!.docs.length,
+      //     itemBuilder: (context,index){
+      //       return CircleAvatar(
+      //       radius: 80,
+      //       backgroundImage: ,
+      //       );
+      // }
+      //
+      // );
+      // }
          //   imageProfile(),
             Expanded(
                 child: Column(
