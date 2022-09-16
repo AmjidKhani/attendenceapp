@@ -24,12 +24,12 @@ class _showallemployeeattendenceState extends State<showallemployeeattendence> {
     screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding:  EdgeInsets.only(left: 20.w,right:20.w ,top:20.h ,bottom:20.h ),
         child: Column(
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(top: 32),
+              margin:  EdgeInsets.only(top: 32.h),
               child: Text(
                 "My Attendance",
                 style: TextStyle(
@@ -42,7 +42,7 @@ class _showallemployeeattendenceState extends State<showallemployeeattendence> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(top: 32),
+                  margin:  EdgeInsets.only(top: 32.h),
                   child: Text(
                     _month,
                     style: TextStyle(
@@ -53,7 +53,7 @@ class _showallemployeeattendenceState extends State<showallemployeeattendence> {
                 ),
                 Container(
                   alignment: Alignment.centerRight,
-                  margin: const EdgeInsets.only(top: 32),
+                  margin:  EdgeInsets.only(top: 32.h),
                   child: GestureDetector(
                     onTap: () async {
                       final month = await showMonthYearPicker(
@@ -135,7 +135,7 @@ class _showallemployeeattendenceState extends State<showallemployeeattendence> {
                         child: Center(
                           child: Text("Attendence Not Found",
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                                  fontSize: 20.sp, fontWeight: FontWeight.bold)),
                         ),
                       ),
                     );
@@ -174,7 +174,7 @@ class _showallemployeeattendenceState extends State<showallemployeeattendence> {
                                         decoration: BoxDecoration(
                                             color: Colors.red,
                                             borderRadius: BorderRadius.all(
-                                              Radius.circular(20),
+                                              Radius.circular(20.r),
                                             )),
                                         child: Center(
                                           child: Text(

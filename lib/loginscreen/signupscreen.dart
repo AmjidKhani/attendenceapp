@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyattendence/addemployee.dart';
 import 'package:companyattendence/loginscreen/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import '../Firebase/firebasehelper.dart';
 import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
@@ -16,26 +14,24 @@ class SignupPage extends StatefulWidget {
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
-
 File? profilepic;
 String? image;
 
 String? imgurl;
 Reference reference=FirebaseStorage.instance as Reference;
 class _SignupPageState extends State<SignupPage> {
- // User? user = FirebaseAuth.instance.currentUser;
+
   bool Loading=false;
   String? valueselected;
   final items = ['Educational', 'IT', 'Hospital', 'Product'];
   final _rolelist = ["Educational", "IT", "Hospital", "Product"];
   String? _RoleSelect = "Select Role";
   final FirebaseAuth _auth = FirebaseAuth.instance;
- // final FirebaseFirestore _db = FirebaseFirestore.instance;
+
   final TextEditingController companyname = TextEditingController();
   final TextEditingController Emailcontroller = TextEditingController();
   final TextEditingController PasswordController = TextEditingController();
-  final TextEditingController ConformPasswordController =
-      TextEditingController();
+  final TextEditingController ConformPasswordController = TextEditingController();
 
   void cleartextfield() async{
     companyname.clear();
@@ -43,7 +39,6 @@ class _SignupPageState extends State<SignupPage> {
     PasswordController.clear();
     PasswordController.clear();
     ConformPasswordController.clear();
-
   }
   @override
   Widget build(BuildContext context) {
@@ -59,15 +54,14 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              imageProfile(),
-
+             // imageProfile(),
               Column(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
-                    "Create a Comapany, It's free ",
+                    "Create a Company,It's free ",
                     style: TextStyle(fontSize: 15.sp, color: Colors.grey[700]),
                   )
                 ],
@@ -143,7 +137,7 @@ class _SignupPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Already have an Company Loginup ?"),
+                  const Text("Already have an Company Loginup ?"),
                   GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -203,14 +197,14 @@ class _SignupPageState extends State<SignupPage> {
           'password': PasswordController.text,
           'Conform Password': ConformPasswordController.text,
           'Role': _RoleSelect,
-           'images':imgurll,
+          // 'images':imgurll,
         }).whenComplete(() {
           setState(() {
 
             Loading=false;
           });
           cleartextfield();
-          Get.to(LoginPage());
+          Get.to(LoginPage( ));
         } )
             .onError((error, stackTrace) {
           Utils().toastMessage(error.toString());
@@ -227,54 +221,54 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-Future uploadImages(File profilepic)async{
+// Future uploadImages(File profilepic)async{
+//
+//     String imag=DateTime.now().microsecondsSinceEpoch.toString();
+//  Reference reference=FirebaseStorage.instance.ref().child('/Images').child('profileimage$imag');
+//  reference.putFile(profilepic);
+//
+// imgurl=await reference.getDownloadURL();
+//     return imgurl;
+// }
 
-    String imag=DateTime.now().microsecondsSinceEpoch.toString();
- Reference reference=FirebaseStorage.instance.ref().child('/Images').child('profileimage$imag');
- reference.putFile(profilepic);
-
-imgurl=await reference.getDownloadURL();
-    return imgurl;
-}
-
-  Widget imageProfile() {
-    return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: 80.0,
-          backgroundImage: image != null
-              ? FileImage(File(image!))as ImageProvider
-              : null
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-          child: InkWell(
-            onTap: () async {
-              final XFile? pickImage = await ImagePicker()
-                  .pickImage(source: ImageSource.gallery, imageQuality: 50);
-              if (pickImage != null) {
-                setState(() {
-                  profilepic = File(pickImage.path);
-                  image=   pickImage.path;
-
-                });
-                uploadImages(profilepic!);
-              }
-              else
-                {
-                  print("hello");
-                }
-            },
-            child: Icon(
-              Icons.camera_alt,
-              color: Colors.teal,
-              size: 28.0,
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
+  // Widget imageProfile() {
+  //   return Center(
+  //     child: Stack(children: <Widget>[
+  //       CircleAvatar(
+  //         radius: 80.0,
+  //         backgroundImage: image != null
+  //             ? FileImage(File(image!))as ImageProvider
+  //             : null
+  //       ),
+  //       Positioned(
+  //         bottom: 20.0,
+  //         right: 20.0,
+  //         child: InkWell(
+  //           onTap: () async {
+  //             final XFile? pickImage = await ImagePicker()
+  //                 .pickImage(source: ImageSource.gallery, imageQuality: 50);
+  //             if (pickImage != null) {
+  //               setState(() {
+  //                 profilepic = File(pickImage.path);
+  //                 image=   pickImage.path;
+  //
+  //               });
+  //               uploadImages(profilepic!);
+  //             }
+  //             else
+  //               {
+  //                 print("hello");
+  //               }
+  //           },
+  //           child: Icon(
+  //             Icons.camera_alt,
+  //             color: Colors.teal,
+  //             size: 28.0,
+  //           ),
+  //         ),
+  //       ),
+  //     ]),
+  //   );
+  // }
 } //main close
 

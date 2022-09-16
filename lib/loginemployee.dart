@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyattendence/loginscreen/signupscreen.dart';
+import 'package:companyattendence/preference.dart';
 import 'package:companyattendence/resuable/util.dart';
 import 'package:companyattendence/attendencescreen/todaysattendence.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,19 +11,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Firebase/firebasehelper.dart';
-import '../Firebase/firebasehelper.dart';
-import '../Firebase/firebasehelper.dart';
-import 'addemployee.dart';
-import 'homepagescreen/homescreen.dart';
 import '../resuable/resuabletextfield.dart';
 import '../resuable/roundedbutton.dart';
-
 class Loginemployee extends StatefulWidget {
   @override
   State<Loginemployee> createState() => _LoginemployeeState();
 }
-
 class _LoginemployeeState extends State<Loginemployee> {
   bool Loading = false;
   String? Designation;
@@ -36,15 +29,8 @@ class _LoginemployeeState extends State<Loginemployee> {
   void cleartextfield() {
     idcontroller.clear();
     passwordcontroller.clear();
+  }
 
-  }
-  @override
-  void dispose() {
-    idcontroller.dispose();
-    passwordcontroller.dispose();
-    // TODO: implement dispose
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +38,14 @@ class _LoginemployeeState extends State<Loginemployee> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Container(
-        margin: EdgeInsets.only(top: 60.h),
+        margin: EdgeInsets.only(top: 200.h),
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            imageProfile(),
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+            child:
+            Column(
+
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Column(
                   children: <Widget>[
@@ -71,7 +55,7 @@ class _LoginemployeeState extends State<Loginemployee> {
                           TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 30.h,
                     ),
                     Text(
                       "Login to your account",
@@ -79,9 +63,13 @@ class _LoginemployeeState extends State<Loginemployee> {
                     )
                   ],
                 ),
+                SizedBox(height:50.h ,),
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       textfield(
                         label: " ID",
@@ -95,12 +83,13 @@ class _LoginemployeeState extends State<Loginemployee> {
                         obscureText: true,
                         textInputType: TextInputType.visiblePassword,
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
+                      // SizedBox(
+                      //   height: 20.h,
+                      // ),
                     ],
                   ),
                 ),
+                SizedBox(height: 20.h,),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.w),
                     child: Container(
@@ -128,21 +117,15 @@ class _LoginemployeeState extends State<Loginemployee> {
                                   .collection("Employee")
                                   .where('id', isEqualTo: id)
                                   .get();
-
-
                               try {
                                 if (password == snap.docs[0]['password']) {
-                                  sharedPreferences = await SharedPreferences.getInstance();
-
-                                  sharedPreferences
-                                      .setString('employeeId', id)
-                                      .then((_) {
+                                  Myprefferences.saveString(id);
                                         setState(() {
-                                         Loading = false;
+                                          Loading = false;
                                         });
                                         Get.to(TodayScreen());
                                         cleartextfield();
-                                      });
+                                      // });
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
@@ -178,28 +161,11 @@ class _LoginemployeeState extends State<Loginemployee> {
                             }
                           },
                           title: 'Submit',
-                          loading: false,
+                          loading: Loading,
                         ))),
-
               ],
             ))
-          ],
-        ),
-      ),
     );
   }
 
-  Widget imageProfile() {
-    return Container(
-
-      child:  CircleAvatar(
-        radius: 80.0.r,
-         // backgroundImage: profilepic == null
-         //   ? null
-         // : FileImage(File(profilepic!!)) as ImageProvider,
-      ),
-    );
-
-
-  }
 }

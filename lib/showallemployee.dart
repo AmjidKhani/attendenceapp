@@ -22,7 +22,7 @@ class _showallemployeeState extends State<showallemployee> {
   Widget build(BuildContext context) {
 
     TextStyle textstyling = TextStyle(
-        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20);
+        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -30,7 +30,7 @@ class _showallemployeeState extends State<showallemployee> {
           },
           child: Icon(
             Icons.add,
-            size: 30,
+            size: 30.sp,
           ),
         ),
         body: Container(
@@ -59,13 +59,13 @@ class _showallemployeeState extends State<showallemployee> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, index) {
                       return Container(
-                        margin: EdgeInsets.only(left: 20, right: 20,bottom: 20),
+                        margin: EdgeInsets.only(left: 20.w, right: 20.w,bottom: 20.h),
                         height: 260.h,
                         decoration: BoxDecoration(
                             color: Colors.red,
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20.r)),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                          padding:  EdgeInsets.only(top: 8.0.h),
                           child: Column(
 
                             // mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +78,7 @@ class _showallemployeeState extends State<showallemployee> {
                                 ),
                               ),
                               SizedBox(
-                                height: 5,
+                                height: 5.h,
                               ),
                               Center(
                                   child: Text(
@@ -86,7 +86,7 @@ class _showallemployeeState extends State<showallemployee> {
                                 style: textstyling,
                               )),
                               SizedBox(
-                                height: 5,
+                                height: 5.h,
                               ),
 
                               Center(
@@ -95,7 +95,7 @@ class _showallemployeeState extends State<showallemployee> {
                                 style: textstyling,
                               )),
                               SizedBox(
-                                height: 5,
+                                height: 5.h,
                               ),
                               Center(
                                   child: Text(
@@ -104,7 +104,7 @@ class _showallemployeeState extends State<showallemployee> {
                                 style: textstyling,
                               )),
                               SizedBox(
-                                height: 5,
+                                height: 5.h,
                               ),
                               Center(
                                   child: Text(
@@ -113,7 +113,7 @@ class _showallemployeeState extends State<showallemployee> {
                                 style: textstyling,
                               )),
                               SizedBox(
-                                height: 5,
+                                height: 5.h,
                               ),
                               Center(
                                   child: Text(
@@ -121,7 +121,7 @@ class _showallemployeeState extends State<showallemployee> {
                                 style: textstyling,
                               )),
                               SizedBox(
-                                height: 10,
+                                height: 10.h,
                               ),
                               SizedBox(
                                 height: 50.h,
@@ -139,10 +139,6 @@ class _showallemployeeState extends State<showallemployee> {
                             ],
                           ),
                         ),
-                        /*    ListTile(
-                    title: Text(snapshot.data!.docs[index]['name']),
-                    subtitle: Text(snapshot.data!.docs[index]['city']),
-                  )*/
                       );
                     },
                   );

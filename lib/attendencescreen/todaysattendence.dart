@@ -11,6 +11,7 @@ import 'package:slide_to_act/slide_to_act.dart';
 import '../attendencehistory/employeeattendencehistory.dart';
 import '../model/user.dart';
 import '../model/user.dart';
+import '../preference.dart';
 class TodayScreen extends StatefulWidget {
   const TodayScreen({Key? key}) : super(key: key);
 
@@ -34,6 +35,8 @@ class _TodayScreenState extends State<TodayScreen> {
 
   @override
   void initState() {
+    User.employeeId;
+    User.employeeId = Myprefferences.preference!.getString('stringkey').toString();
     getId();
     _getRecord();
     super.initState();
@@ -91,7 +94,7 @@ class _TodayScreenState extends State<TodayScreen> {
                   "Welcome,",
                   style: TextStyle(
                     color: Colors.black54,
-                    //fontFamily: "NexaRegular",
+
                     fontSize: screenWidth / 20,
                   ),
                 ),
@@ -317,8 +320,8 @@ class _TodayScreenState extends State<TodayScreen> {
                         ),
                       ),
                     ),
-              SizedBox(height: 130.h,),
-              RoundButton(title: 'Attendence History',
+              SizedBox(height: 80.h,),
+              RoundButton(title: 'Attendance History',
                 onTap: () {
                   Get.to(CalendarScreen());
                 },),

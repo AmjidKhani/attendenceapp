@@ -19,7 +19,7 @@ class addingnewemployee extends StatefulWidget {
 }
 
 
-bool loading = false;
+bool Loading = false;
 final TextEditingController UserNameController = TextEditingController();
 final TextEditingController idcontroller = TextEditingController();
 final TextEditingController PasswordController = TextEditingController();
@@ -37,18 +37,6 @@ class _addingnewemployeeState extends State<addingnewemployee> {
     CityController.clear();
   }
 
-  @override
-  // void dispose() {
-  //   UserNameController.dispose();
-  //   idcontroller.dispose();
-  //   PasswordController.dispose();
-  //   phonenoController.dispose();
-  //   CnicController.dispose();
-  //   CityController.dispose();
-  //
-  //   // TODO: implement dispose
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +120,7 @@ class _addingnewemployeeState extends State<addingnewemployee> {
 
               RoundButton(
                 title: 'Submit',
+                loading: Loading,
                 onTap: () {
                   // setState(() {
                   //   loading = true;
@@ -165,7 +154,7 @@ class _addingnewemployeeState extends State<addingnewemployee> {
       Utils().toastMessage("City Must not be Empty");
     } else {
       setState(() {
-        loading = true;
+        Loading = true;
       });
       await Employee.add({
         'name': UserNameController.text,
@@ -176,13 +165,13 @@ class _addingnewemployeeState extends State<addingnewemployee> {
         'city': CityController.text
       }).then((value) {
         setState(() {
-          loading = false;
+          Loading = false;
         });
         Get.to(showallemployee());
         cleartextfield();
       }).onError((error, stackTrace) {
         setState(() {
-          loading = false;
+          Loading = false;
         });
 
         Utils().toastMessage(error.toString());
